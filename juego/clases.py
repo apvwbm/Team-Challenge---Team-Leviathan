@@ -12,26 +12,16 @@ class Barco:
         self.hundido = False
 
     def colocar(self, posiciones):
-        if len(posiciones) == self.eslora:
-            self.posiciones = posiciones
-            print(f"El barco '{self.nombre}' se ha colocado en las posiciones {
-                  self.posiciones}.")
-        else:
-            print(f"Error: La eslora del barco '{
-                  self.nombre}' no coincide con el número de posiciones.')
+        self.posiciones = posiciones
 
     def recibir_disparo(self, fila, col):
         if (fila, col) in self.posiciones:
-            self.posiciones.remove((fila, col)) 
-            print(f"¡Impacto en el barco '{self.nombre}' en la posición ({fila}, {col})!")
+            self.posiciones.remove((fila, col))
 
-    
             if not self.posiciones:
                 self.hundido = True
-                print(f"El barco '{self.nombre}' ha sido hundido.")
             return True
         else:
-            print(f"El disparo en ({fila}, {col}) ha caído en agua.")
             return False
 
 

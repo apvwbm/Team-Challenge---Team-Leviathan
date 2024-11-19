@@ -1,8 +1,8 @@
-from funciones import mensaje_lenta, menu_principal, seleccionar_dificultad, turno_usuario, turno_maquina
+from funciones import mensaje_lento, menu_principal, seleccionar_dificultad, turno_usuario, turno_maquina
 from variables import TABLERO_DIMENSIONES, BARCOS
 from clases import Tablero
 
-mensaje_lenta("¡Bienvenido a Hundir la Flota! ¿Estás preparado para esta batalla?")
+mensaje_lento("¡Bienvenido a Hundir la Flota! ¿Estás preparado para esta batalla?")
 
 menu_principal()
 
@@ -29,3 +29,5 @@ while vidas_usuario > 0 and vidas_maquina > 0:
         break
 
 menu_principal()
+tablero_usuario.imprimir_tablero(mostrar_barcos=True)
+

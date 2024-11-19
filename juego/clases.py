@@ -3,7 +3,6 @@ import numpy as np
 from random import randint, choice
 from variables import SIMBOLOS
 
-
 class Barco:
     def __init__(self, nombre, eslora):
         self.nombre = nombre
@@ -24,22 +23,19 @@ class Barco:
         else:
             return False
 
-
 class Tablero:
     def __init__(self, jugador_id, dimensiones, barcos):
         self.jugador_id = jugador_id
-        self.dimensiones = dimensiones if isinstance(
-            dimensiones, tuple) else (dimensiones, dimensiones)
+        self.dimensiones = dimensiones if isinstance(dimensiones, tuple) else (dimensiones, dimensiones)
         self.tablero = np.full(self.dimensiones, SIMBOLOS["agua"], dtype=str)
-        self.tablero_disparos = np.full(
-            self.dimensiones, SIMBOLOS["agua"], dtype=str)
+        self.tablero_disparos = np.full(self.dimensiones, SIMBOLOS["agua"], dtype=str)
         self.barcos = []
-
-        # Crear los barcos según la estructura de BARCOS (en variables.py)
+        
+        # Crear los barcos según la estructura de BARCOS
         for nombre, (eslora, cantidad) in barcos.items():
             for _ in range(cantidad):
                 self.barcos.append(Barco(nombre, eslora))
-
+        
         # Sumar todas las vidas
         self.vidas = sum(barco.eslora for barco in self.barcos)
 
@@ -57,8 +53,7 @@ class Tablero:
                 x = randint(0, self.dimensiones[0] - 1)
                 y = randint(0, self.dimensiones[1] - 1)
                 orientacion = choice(["H", "V"])
-                posiciones = self.generar_posiciones(
-                    x, y, barco.eslora, orientacion)
+                posiciones = self.generar_posiciones(x, y, barco.eslora, orientacion)
                 if self.validar_posiciones(posiciones):
                     self.colocar_barco(barco, posiciones)
                     colocado = True
@@ -76,7 +71,10 @@ class Tablero:
         Returns:
             list: *Lista de tuplas* con las coordenadas (fila, columna) que ocupará el barco. Por ejemplo, [(X, Y), (X, Y), (X, Y)].
         """
-        pass  # Implementar
+        if orientacion == "H":
+            return [(fila, col + i) for i in range(eslora)]
+        else:
+            return [(fila + i, col) for i in range(eslora)]
 
     def validar_posiciones(self, posiciones):
         """
@@ -88,7 +86,12 @@ class Tablero:
         Returns:
             bool: True si las posiciones son válidas, False si no lo son.
         """
-        pass  # Implementar
+        for fila, col in posiciones:
+            if not (0 <= fila < self.dimensiones[0] and 0 <= col < self.dimensiones[1]):
+                return False
+            if self.tablero[fila, col] != SIMBOLOS["agua"]:
+                return False
+        return True
 
     def colocar_barco(self, barco, posiciones):
         """
@@ -98,20 +101,39 @@ class Tablero:
             barco (Barco): Objeto de la clase Barco.
             posiciones (list): Lista de tuplas con las coordenadas (fila, columna).
         """
-        pass  # Implementar
+        barco.colocar(posiciones)
+        for fila, col in posiciones:
+            self.tablero[fila, col] = SIMBOLOS["barco"]
 
     def disparo(self, fila, col):
         """
         Verifica si un disparo impacta en cualquiera de los barcos del jugador (self).
 
         Args:
-            fila (int): _description_
-            col (int): _description_
+            fila (int): Coordenada de la fila para disparar.
+            col (int): Coordenada de la columna para disparar.
 
         Returns:
-            int: 0 si cae en agua, 1 si hay impacto en un barco, 2 si dispara a una casilla ya disparada.
+            int: Código del resultado del disparo.
+                - 0: Disparo en agua.
+                - 1: Impacto en un barco.
+                - 2: Disparo a una casilla ya atacada.
+                - 3: Hundimiento de un barco.
         """
-        pass  # Implementar
+        if self.tablero_disparos[fila, col] != SIMBOLOS["agua"]:
+            return 2  # Ya disparado
+
+        for barco in self.barcos:
+            if barco.recibir_disparo(fila, col):
+                self.tablero[fila, col] = SIMBOLOS["impacto"]
+                self.tablero_disparos[fila, col] = SIMBOLOS["impacto"]
+                self.vidas -= 1
+                return 1 if not barco.hundido else 3  # Impacto o Hundido
+
+        self.tablero[fila, col] = SIMBOLOS["fallo"]
+        self.tablero_disparos[fila, col] = SIMBOLOS["fallo"]
+        return 0  # Agua
+
 
     def imprimir_tablero(self, mostrar_barcos=False):
         print(self.tablero if mostrar_barcos else self.tablero_disparos)

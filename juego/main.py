@@ -1,26 +1,21 @@
-
 from funciones import mensaje_lenta, menu_principal, seleccionar_dificultad, turno_usuario, turno_maquina
+from variables import TABLERO_DIMENSIONES, BARCOS
+from clases import Tablero
 
 mensaje_lenta("¡Bienvenido a Hundir la Flota! ¿Estás preparado para esta batalla?")
 
 menu_principal()
 
-tablero_usuario = #Sustituir posiciones_barcos_maquina con los valores de la clase.
-tablero_maquina = #Sustituir posiciones_barcos_maquina con los valores de la clase.
-
-vidas_usuario = 20
-vidas_maquina = 20
-    
 dificultad_partida = seleccionar_dificultad()
+
+tablero_usuario = Tablero("Usuario", TABLERO_DIMENSIONES, BARCOS)
+tablero_maquina = Tablero("Maquina", TABLERO_DIMENSIONES, BARCOS)
+
 vidas_usuario = 20
 vidas_maquina = 20
-
-tablero_usuario = #Sustituir tablero_usuario con los valores de la clase.
-tablero_maquina = #Sustituir tablero_maquina con los valores de la clase.
-
     
 print("\nTablero del usuario:")
-tablero_usuario.mostrar_tablero(tablero_usuario.tablero_usuario)
+tablero_usuario.imprimir_tablero(mostrar_barcos=True)
     
 while vidas_usuario > 0 and vidas_maquina > 0:
     usuario_gana, vidas_maquina = turno_usuario(tablero_maquina, vidas_maquina)
@@ -32,3 +27,5 @@ while vidas_usuario > 0 and vidas_maquina > 0:
     if maquina_gana:
         print("Capitán, nos estamos hundiendo. Esta vez no ha podido ser.")
         break
+
+menu_principal()

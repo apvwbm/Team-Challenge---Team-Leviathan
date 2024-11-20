@@ -53,7 +53,7 @@ def seleccionar_dificultad():
 
 
 # Función que define el turno del usuario. Es necesario verificar las salidas de los métodos de clase 
-# de barcos y tablero para redefinir las entradas y el procesamiento de datos, pero creo que la lógica es esa.
+# de barco y tablero para redefinir las entradas y el procesamiento de datos, pero creo que la lógica es esa.
 def turno_usuario(tablero_maquina, vidas_maquina):
 
     while True: # Se utilizó `While True` para controlar los turnos, 
@@ -98,7 +98,7 @@ def turno_maquina(tablero_usuario, vidas_usuario, dificultad):
     for i in range(intentos):
         filas, columnas = random.randint(0, 9), random.randint(0, 9)
         try:
-            if (filas, columnas) in tablero_usuario.barco: 
+            if (filas, columnas) in tablero_usuario.barcos:   # JY: Se modifico barco en vez de barcos
                 print("¡BOOOM! Parece que has sido alcanzado. Prepárate para la batalla")
                 tablero_usuario.tablero[filas][columnas] = "O"
                 vidas_usuario -= 1

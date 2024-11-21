@@ -2,7 +2,7 @@ import time
 from random import randint
 from variables import SIMBOLOS
 
-def mensaje_lento(mensaje, delay=0.0):
+def mensaje_lento(mensaje, delay=0.02):
     for caracter in mensaje:
         print(caracter, end='', flush=True)
         time.sleep(delay)

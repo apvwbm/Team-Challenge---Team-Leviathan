@@ -135,5 +135,18 @@ class Tablero:
         return 0  # Agua
 
 
-    def imprimir_tablero(self, mostrar_barcos=False):
-        print(self.tablero if mostrar_barcos else self.tablero_disparos)
+    def imprimir_tablero(self, mostrar_barcos=False, es_usuario=True):
+        
+        #Control booleano para mostrar los barcos del usuario y omitir 
+        # las posiciones de los barcos de la máquina, mostrando solo los disparos.
+
+        tablero_a_exibir = self.tablero if mostrar_barcos else self.tablero_disparos
+    
+        if es_usuario:
+            print("Tablero del Usuario:")
+        else:
+            print("Tablero de la Máquina:")
+    
+        for fila in tablero_a_exibir:
+            print(" ".join(fila))
+        print()
